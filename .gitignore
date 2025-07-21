@@ -1,0 +1,29 @@
+# Golang
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.*
+
+# Logs
+*.log
+
+# Docker
+**/pg_data/

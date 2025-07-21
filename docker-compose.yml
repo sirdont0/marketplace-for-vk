@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=marketplace
+      - JWT_SECRET=KcAR/8YzNS1gkQZ5rimX27roc0YJ8nXd/5Vh0ef/6tw=
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=marketplace
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  pg_data:
