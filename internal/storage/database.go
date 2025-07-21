@@ -37,5 +37,31 @@ func InitDB() error {
 	}
 
 	db = pool
+
+	// Автоматическое создание таблиц, если их нет
+	createTables := []string{
+		`CREATE TABLE IF NOT EXISTS users (
+			id SERIAL PRIMARY KEY,
+			login VARCHAR(50) UNIQUE NOT NULL,
+			password_hash VARCHAR(100) NOT NULL,
+			created_at TIMESTAMP DEFAULT NOW()
+		);`,
+		`CREATE TABLE IF NOT EXISTS ads (
+			id SERIAL PRIMARY KEY,
+			title VARCHAR(100) NOT NULL,
+			text TEXT NOT NULL,
+			image_url VARCHAR(255) NOT NULL,
+			price DECIMAL(10, 2) NOT NULL,
+			author_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+			created_at TIMESTAMP DEFAULT NOW()
+		);`,
+	}
+
+	for _, query := range createTables {
+		_, err := db.Exec(context.Background(), query)
+		if err != nil {
+			return fmt.Errorf("failed to create table: %v", err)
+		}
+	}
 	return nil
 }
